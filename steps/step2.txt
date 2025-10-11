@@ -1,0 +1,45 @@
+Now, we go on "expo.dev" > docs > "npx create-expo-app@latest ." in the terminal > we have put "." to make it install under the current directory here.
+
+Can do : ctrl+shift+P > reload window > to reload if some error coming due to no reason after installation due to bugs.
+
+Lets use the "reset-project" file we have to reset the project to make a clean start and there press Y to move it to some exmaple file there using "npm run reset-project" command ; later we don't need that also so delete app-example folder too there.
+
+---------------------------------------------------------------------------------------------------
+
+Now : how to run this application ?
+
+We can either install expo go on mobile phones and then use the QR CODE of terminal to open the app in the device OR we can also download a simulator.
+
+For Windows install : Android Studio AND for mac : XCode
+
+---------------------------------------------------------------------------------------------------
+
+Now , we can type "npx expo" in terminal to get QR code, then ensure that laptop and phone are connected to SAME WIFI and then scan it on device on phone using the EXPO app.
+
+We can type in "index.tsx" anything extra there to see the changes in real-time in the mobile device too there.
+
+---------------------------------------------------------------------------------------------------
+
+Now for windows lets do > google > android studio > click on first link there : developer.android.com > download > accept terms > click download > open file > begin installation > keep both checkbox ticked to install virtual device too > click next , next ... > install > finish > open it > wizard opens > click next > standard > next > accept > finish > installaing wait > finish
+
+Click > new project > phone (wear os is for smartwatches and all) > choose new empty activity > name it something > finish > if popup comes > set microsoft defender configuration > click automatically there.
+
+In right sidebar there > choose the 3rd option that says "device manager" > click + sign > create virtual device > select a phone lets say pixel 9 > next > select and download there an image > lets select "vanillacle" one > download it > finish > then select the downloaded image > next > name the device > finish.
+
+Now in that sidebar again > select the device added just now > click on PLAY there > then on 4th option of sidebar "running device" > you can see the device there.
+
+NOTE : AVD means "android virtual device"
+
+Now: go on file > settings > search "sdk" > android sdk > copy the android sdk location from there > open PC's file explorer > paste the path there in search bar on top > open "platform-tools" folder there > copy the path from search bar again now > click window key > environment variables > advanced > environment variables click there > double click on path there > edit > new > paste the path we copied > press OK OK ... > restart vs code > in terminal test by typing > adb version > adb devices.
+
+Again start "npx expo"
+
+---------------------------------------------------------------------------------------------------
+
+Now we can again type "npx expo" in terminal > click "w" to open the app in web browser > click "a" to open in android (FOR WINDOWS) > and its I for ios (in MAC)
+
+---------------------------------------------------------------------------------------------------
+
+So we press "a" now there > so now whatever device is played in android studio will see the content of index.tsx there for now > any changes made there will be seen there too in real time > can open both these vs code and adnrois studio parallely side by side for a better look too.
+
+See the next steps in step3.txt file now there.

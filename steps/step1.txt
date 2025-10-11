@@ -1,0 +1,196 @@
+What is React Native?
+
+Its a framework that allows you to build mobile applications using React : we will use TypeScript in this course.
+
+Cross-platform development means writing code once and it can then run on multiple platforms.
+
+React native is a cross-platform framework because we can write one codebase in Javascript or TypeScript and then deploy it on both iOS and Android.
+
+------------------------------------------------------------------------------------------------------
+
+We earlier used to have two teams for developing android apps and iOS apps seperately , when building apps, like for iOS , we had macbook required and XCode was required as IDE there , and for Android development , we had to learn Android SDK and its frameworks and had to use Android or Eclipse Studio as the IDE there ; but React native solves this issue , as we can build the same app for both using a single language.
+
+React Native itself is not enough as we should use it with framework like "Expo" : as per the documentation on : "reactnative.dev" : so this framework has set of tools that allows us to build our mobile app very quickly.
+
+Expo has been used to make many apps like : BlueSky, Phantom-Crypt wallet, Coinbase etc.
+
+So, we will be writing code in React Native , but it will have some features used from Expo framework in it.
+
+------------------------------------------------------------------------------------------------------
+
+In React , we write like -
+
+import react from "react"
+
+const WebComponent = () => {
+    return (
+        <div className="container">
+            <h1> Welcome </h1>
+            <p>This is a web component</p>
+        </div>
+    )
+}
+
+; then its same thing in react Native will be as follows -
+
+import React from "react";
+import { View, Text } from "react-native";
+
+const NativeComponent = () => {
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}> Welcome </Text>
+            <Text>This is a native component</Text>
+        </View>
+    )
+}
+
+; so here we have View used instead of div and for any type of text tags we have Text here.
+
+------------------------------------------------------------------------------------------------------
+
+Also , in react, we have a CSS file for stylings of classes given using "classname" there ; but : for react Native , we have a "stylesheet" imported , which is an Object that has key value pairs for classname followed by the styles in it.
+
+like we can have -
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+});
+
+and then in the main file use as : styles.container or styles.title there.
+
+------------------------------------------------------------------------------------------------------
+
+Also , in web react apps we have event handlers like onClick , onMouseHover , etc , like -
+
+const WebButton = () => {
+    const handleClick = () => {
+        console.log("Button Clicked");
+    };
+    return <button 
+                onClick={handleClick}
+                onMouseHover = {() => console.log("Mouse hovered")}
+                style = {{border: "1px solid black", padding: "10px"}
+            >
+            Click Me
+            </button>;
+};
+}
+
+But since React native build mobile applications , so there we have to use event handlers like "onPress" , "onLongPress" , etc.
+
+const NativeButton = () => {
+    return <TouchableOpacity 
+                onPress={() => console.log("Button Clicked")}
+                onLongPress={() => console.log("Button Long Pressed")}
+                style = {{border: "1px solid black", padding: "10px"}
+            >
+            Click Me
+            </TouchableOpacity>;
+};
+
+; we also see that instead of button, here we have : TouchableOpacity or Pressable , which is a component that is used for buttons in react native.
+
+------------------------------------------------------------------------------------------------------
+
+In React , we have lists where we use "map" as follows -
+
+const WebList = ({items}) => {
+    return (
+        <div className="list-container">
+            {items.map((item) => (
+                <div key={item.id} className="list-item">
+                    <h3>{item.title}</h3>
+                    <p>{item.description}</p>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+But in react native we use FlatList instead as follows - 
+
+const NativeList = ({items}) => {
+    const renderItem = ({item}) => (
+        <View style={styles.item}>
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.description}>{item.description}</Text>
+        </View>
+    );
+    return (
+        <FlatList
+            data={items} // this is the array that we will map over
+            renderItem={renderItem} // we will run this function now for each item ; where the renderItem function like seen above, takes an item and returns something.
+            keyExtractor={(item) => item.id}
+            onEndReached={() => console.log("End reached")}
+            onEndReachedThreshold={0.5}
+        />
+    );
+}
+
+------------------------------------------------------------------------------------------------------
+
+Also, in React we have <form> with a "onSUbmit" handler there ; 
+
+const WebForm = () => {
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+    });
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+                console.log(formData);
+            }}
+        >
+            <input
+                type="text"
+                placeholder="Username"
+                value={formData.username}
+                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+            />
+            <input
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+            <button type="submit">Submit</button>
+        </form>
+    );
+}
+
+but in react native we don't have form , instead we put an input and have onPress on the button there like -
+
+const NativeForm = () => {
+    return (
+        <View>
+            <TextInput
+                placeholder="Username"
+                value={username}
+                onChangeText={(text) => setUsername(text)}
+            />
+            <TextInput
+                placeholder="Email"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+            />
+            <TouchableOpacity title="Submit" onPress={() => console.log("Submitted")} />
+        </View>
+    );
+}  
+
+------------------------------------------------------------------------------------------------------
+
+See the next steps in step2.txt file now there.

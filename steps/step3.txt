@@ -1,0 +1,7 @@
+Everything starts from the "app" folder there that comes up with "expo" which uses "file-based routing" > every file will be a different screen.
+
+_layout is the file where our application starts > index.tsx is the home screen , where we have <View> which is div like react and also a Text component there ; also we have an object inside the "style" there , which has all the styles as "key-value pairs" there , which we want to give on the View component there ; like if we add backgroundColor: "red", there > it instantly makes the background "red" there on android studio and so on....
+
+But there we see if we put lot of styles there; the file will become way too ugly there > so we cut it from the {} there and create a function "styles" instead there.
+
+See the next steps in index.tsx file now there.

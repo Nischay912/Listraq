@@ -1,0 +1,9 @@
+But now we don't want to have this Stack navigator , but instead have the "Tab Navigator" : which is a navigation pattern that creates a tab bar (usually at bottom of screen) allowing the users to change the screen when clicked on different tabs there.
+
+Can see the documentation : https://docs.expo.dev/router/advanced/tabs/ > to see how to implement it there now.
+
+SO, we go in app folder and create folder > (tabs) > create a "_layout.tsx" file in it , used to style the colors and other styles for the icons and text on the tabs there to navigate to different screens there.
+
+Now , the first screen is > index.tsx which we can drag and drop in this tabs folder and also create a tab for settings named "settings.tsx" in the tabs folder there > to have : The tab bar with have two tabs: Home and Settings there now.
+
+Initialize the settings.tsx file using "rnfe" there and then see the next steps in the _layout.tsx file of root layout there , not the one inside the (tabs) , but the root one.
