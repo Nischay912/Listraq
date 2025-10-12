@@ -1,0 +1,5 @@
+Now when we click on the "add todo button there" , we will see the todo added in the console too , as we were logging it earlier there > and also on convex dashboard > data > we can see the todo added there too in real-time there.
+
+Convex there automatically gives us the "_id" and "_creationTime" field by itself there.
+
+See the next steps in index.tsx file now there.

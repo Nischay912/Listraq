@@ -1,0 +1,11 @@
+Now we will use "CONVEX" for the backend of React Native as the backend of our application.
+
+Its free for upto 20 projects.
+
+We have other too like Firebase, Supabase , SQL, etc too.
+
+We can go on "https://www.convex.dev/" for the documentation there > login there using Github there > then in terminal of vs code > press + to open new powershell > "npm i convex" > then > "npx convex dev" > to login into the convex account there > after login > create new project > name the project > cloud deployment > done !
+
+"convex" folder gets created showing success > now we can visit the dashboard there on convex > and for now there will be no data there > no tables and all there.
+
+See the next steps in "schema.ts" file of the "convex" folder now there.

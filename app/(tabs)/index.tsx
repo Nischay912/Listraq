@@ -1,4 +1,6 @@
+import { api } from "@/convex/_generated/api";
 import useTheme from "@/hooks/useTheme";
+import { useMutation, useQuery } from "convex/react";
 import { Link } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { StyleSheet } from "react-native";
@@ -7,6 +9,26 @@ export default function Index() {
 
   // step91: lets get the toggle function from the useTheme hook here below.
   const { toggleDarkMode } = useTheme();
+
+  // step143: lets call the query to get all the todos here in the home screen.
+
+  // step144: the useQuery works similar to useState + useEffect here as : it update the component when the data changes.
+
+  // step145: we are using "api" here ; "api" is usually an auto-generated object by Convex that contains all your backend queries and mutations ; so it sees that under the "todos" table , we have a "getTodos" query which it calls thus here below.
+
+  // const todos = useQuery(api.todos.getTodos);
+
+  // step146: we can do console.log(todos) here to see the data that is being fetched from the backend.
+
+  // step147: now in terminal of vs-code where app running : press "r" to reload the app > then we can see initially "undefined" being logged as then its in loading state while fetching data from the backend , but once fetched , it logs there [] i.e. an empty array as currently there are no todos in our backend there.
+
+  // console.log(todos);
+
+  // step148: similarly, we can make POST requests using "useMutation" here below too.
+  // const addTodo = useMutation(api.todos.addTodo);
+
+  // step153: lets use another mutation to clear all the todos here below.
+  // const clearAllTodos = useMutation(api.todos.clearAllTodos);
 
   return (
     <View
@@ -37,6 +59,22 @@ export default function Index() {
         {/* step95: now see the next steps in step96.txt file now there. */}
         <Text>Toggle the theme</Text>
       </TouchableOpacity>
+
+      {/* step149: lets create a button for now to add a todo here below. */}
+
+      {/* step150: it calls the function with "text" as argument here below; name of argument is kept same as mentioned in backend file there earlier too there. */}
+
+      {/* step151: see the next steps in step152.txt file now there. */}
+      {/* <TouchableOpacity onPress= {() => addTodo({ text: "Buy some milk" })} >
+        <Text>Add a todo</Text>
+      </TouchableOpacity> */}
+
+      {/* step154: now lets make a button to clear all the todos here below, which when clicked will delete all the todos from "convex" database there and also the console log will now show [] empty as all the todos have been deleted there now thus here below. */}
+
+      {/* step155: see the next steps now in index.tsx file now there. */}
+      {/* <TouchableOpacity onPress={() => clearAllTodos()}>
+        <Text>Clear all todos</Text>
+      </TouchableOpacity> */}
 
       {/* step16: now lets use the Link component here below from the "expo-router" package. */}
 
