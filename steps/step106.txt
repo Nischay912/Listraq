@@ -1,0 +1,5 @@
+Now we are going to send a "fetch" request , that will be sent from React-Native app to the database ; this sending of request to FETCH is called "QUERY".
+
+Now, in Mutation : we have CREATE , UPDATE and DELETE : so anything other than GET is "Mutation".
+
+See the next steps in todos.ts file now there.

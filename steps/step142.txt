@@ -1,0 +1,15 @@
+Now, we when installed convex : it created a .env file there too : which helps us to be connected to the convex project of their dashboard which we created there earlier.
+
+You can go on > docs.convex.dev > quickstart > react native > step8: connect the app to backend > go in _layout.tsx of root directory i.e. the _layout file present outside all folders in "app" > there put : "import { ConvexProvider, ConvexReactClient } from "convex/react";" > then there we do -
+
+const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
+  unsavedChangesWarning: false,
+});
+
+; clearly this uses the .env file's link that convex had created earlier there.
+
+Now : we can wrap the entire app there with "<ConvexProvider client={convex}>" there : here passing the client makes us connected to the exact project that "convex" created for us there and placed in link in ".env" file there : which we used above there too.
+
+And so now in our entire application , we can use "convex" and connect to our backend from frontend anywhere now.
+
+See the next steps in index.tsx file now there.
