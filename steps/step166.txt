@@ -1,0 +1,3 @@
+Now we can create a file "home.styles.ts" file in "styles" folder under the "assets" folder there now.
+
+See the next steps there now.

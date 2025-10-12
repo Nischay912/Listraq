@@ -1,0 +1,5 @@
+Now: go on goole > search : "linear gradient expo" > "https://docs.expo.dev/versions/latest/sdk/linear-gradient/" > "npx expo install expo-linear-gradient" : put this in terminal > then as per the documnetation, use its self closed component <LinearGradient /> in which we pass the colors that tells go from this color to that one: like example : ['rgba(0, 0, 0, 0)', transparent] > it means that : color in gradient will go from black to transparent.
+
+We can also wrap components with <LinearGradient></LinearGradient> there and put the colors of gradient there.
+
+Now see the next steps in index.tsx file now there.
