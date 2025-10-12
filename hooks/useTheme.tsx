@@ -107,7 +107,7 @@ interface ThemeContextType {
 // step57: we use <> to tell that : This context can either be undefined (before initialization) or an object following the ThemeContextType structure ; | means OR in typescript.
 
 // step58: now see the next steps in step59.txt file now there.
-const ThemeContext = createContext<undefined | ThemeContextType>(undefined)
+const ThemeContext = createContext<undefined | ThemeContextType>(undefined);
 
 // step60: now lets create a function called "ThemeProvider" here below.
 
