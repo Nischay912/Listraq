@@ -1,8 +1,13 @@
+import useTheme from "@/hooks/useTheme";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { StyleSheet } from "react-native";
 
 export default function Index() {
+
+  // step91: lets get the toggle function from the useTheme hook here below.
+  const { toggleDarkMode } = useTheme();
+
   return (
     <View
     // step6: now from the stylesheet named "styles" , lets give the container class here below to this View component.
@@ -19,6 +24,19 @@ export default function Index() {
 
       {/* step15: can see the gap now between the text components there now. */}
       <Text>hi</Text>
+
+      {/* step92: lets create a button , which is "TouchableOpacity" in React Native thus here below. */}
+      <TouchableOpacity onPress={toggleDarkMode}>
+
+        {/* Toggle the theme */}
+
+        {/* step93: we can't have the text of button too as such , but must be inside a "Text" component here below. */}
+
+        {/* step94: now on clicking this we will see the color change stating we now are in a different mode : and after going to dark mode if we close the app there and then re-run the app, it will still be in dark mode there as we had used AsyncStorage to save the value of darkMode in local storage there earlier. */}
+
+        {/* step95: now see the next steps in step96.txt file now there. */}
+        <Text>Toggle the theme</Text>
+      </TouchableOpacity>
 
       {/* step16: now lets use the Link component here below from the "expo-router" package. */}
 

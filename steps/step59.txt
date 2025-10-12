@@ -1,0 +1,9 @@
+Now we know we will need something like LocalStorage here to save the preference of user of light or dark mode so that even if page is refreshed or user come backs later ; the mode must be same as the user selected before cloding the page.
+
+But here we can't use localStorage unlike Web applications ; but have a differnet package called "async storage".
+
+Async storage is React Native's simple and promise-based API for persisting small bits of data on a user's device. Think of it as mobile-application equivalent for browser's localStorage, but its asynchronous and cross-platform.
+
+SO lets install the package in terminal using : "npm i @react-native-async-storage/async-storage" there.
+
+See the next steps in useTheme.jsx file now there.
