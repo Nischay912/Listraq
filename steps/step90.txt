@@ -1,0 +1,7 @@
+Now, we see that : its giving us the lightMode colors by default when using colors.primary and all there ; its because we in useTheme.tsx have : 
+
+const colors = isDarkMode ? darkColors : lightColors : and by default we had value of isDarkMode as "false" there ; so it comes as "lightMode" by default there.
+
+Now lets create the button to toggle the state there now.
+
+See the next steps in index.tsx file now there.

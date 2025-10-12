@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/hooks/useTheme";
 import { Stack } from "expo-router";
 
 export default function RootLayout() {
@@ -8,21 +9,37 @@ export default function RootLayout() {
   // step26: But : for now : lets try to update the title to something else here below ; so we can use the Stack.Screen component to give a title to each screen , based on their name which comes from the file names there , like name="index" fo index.tsx , name="about" for about.tsx and so on....
 
   // step27: see the next steps in step28.txt file now there.
-  return <Stack screenOptions={{  headerShown: false }}>
+
+  return (
     
-    {/* step29: now we will replace the name="index" with (tabs) so that we can now have the tab navigators be used here below. */}
-    <Stack.Screen
-      // name = "index"
+    // step82: now lets wrap the entire application here below with the ThemeProvider component so that we can use the light and dark mode in any of the screens thus here below.
 
-      // step30: so we have only one stack screen which is the tabs , and in this one screen only we will have navigation tabs to switch screen while remaining in the same stack screen here below ; i.e. now the screens wont change on navigating here below.
+    // step83: now : This means every child component of ThemeProvider can now access the theme without passing props manually.
 
-      // step31: see the next steps in _layout.tsx of the (tabs) folder now there.
-      name = "(tabs)"
-      options={{title: "Home"}}
-    />
-    {/* <Stack.Screen
-      name = "about"
-      options={{title: "About"}}
-    /> */}
-  </Stack>
+    // step84: thus now : every screen will have access to the values which the ThemeProvider component has ; i.e. isDarkMode, toggleDarkMode and colors from there, thus here below.
+
+    // step85: now see the next steps in _layout.tsx of the (tabs) folder now there.
+    <ThemeProvider>
+
+       <Stack screenOptions={{  headerShown: false }}>
+
+        {/* step29: now we will replace the name="index" with (tabs) so that we can now have the tab navigators be used here below. */}
+        <Stack.Screen
+          // name = "index"
+
+          // step30: so we have only one stack screen which is the tabs , and in this one screen only we will have navigation tabs to switch screen while remaining in the same stack screen here below ; i.e. now the screens wont change on navigating here below.
+
+          // step31: see the next steps in _layout.tsx of the (tabs) folder now there.
+          name = "(tabs)"
+          options={{title: "Home"}}
+        />
+        {/* <Stack.Screen
+          name = "about"
+          options={{title: "About"}}
+        /> */}
+      </Stack>
+      
+  </ThemeProvider>
+
+  );
 }
