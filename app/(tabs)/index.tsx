@@ -3,7 +3,7 @@ import { api } from "@/convex/_generated/api";
 import useTheme, { ColorScheme } from "@/hooks/useTheme";
 import { useMutation, useQuery } from "convex/react";
 import { Link } from "expo-router";
-import { Alert, FlatList, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, StatusBar, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,11 +13,20 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { Ionicons } from "@expo/vector-icons";
 import EmptyState from "@/components/EmptyState";
+import { use, useState } from "react";
 
 // step252: lets get the type of each item in todos array using the Convex function "Doc" which takes the table "todos" as input and returns the type of each item as per the table's Schema here below ; if we hover on Todo : we can see the type its having here below.
 type Todo = Doc<"todos">
 
 export default function Index() {
+
+  // step288: now on clicking EDIT button , we want a new state to be rendered there with input tag and save or cancel button ; so lets create the two states needed here below.
+
+  // step289: we have a state to "store the ID of the todo item currently being edited" ; and as per Typescript , we need to mention its type too along with initial values or the values it can be : here below its that : it can either be : an ID (of type Id<"todos"> — i.e., an identifier from Convex’s "todos" table), or null i.e. "no todo being editted / no todo selected for editting for now".
+  const [edittingId , setEdittingId] = useState<Id<"todos"> | null>(null)
+
+  // step290: now lets lets have a state to : store the current text entered while editing a todo item ; intially "null" i.e. nothing typed there for editting it there, hence so now thus here below.
+  const [editText, setEditText] = useState("")
 
   // step91: lets get the toggle function from the useTheme hook here below.
 
@@ -44,6 +53,12 @@ export default function Index() {
     // step265: put this above the if consition as this "hook" has to be always be called there ; else it will call error as early return may occur there if the "if" statement is above this hook here below.
   const toggleTodo = useMutation(api.todos.toggleTodo);
 
+  // step281: now lets make another POST request using useMutation to make a call to the backedn for delete thus now here below.
+  const deleteTodo = useMutation(api.todos.deleteTodo)
+
+  // step296:now lets make a POST request to backend via "useMutation" method here below which makes call to the mutation to update Todo here below.
+  const updateTodo = useMutation(api.todos.updateTodo)
+
   // step237: lets render the LoadingSpinner component here below when isLoading is true.
 
   // step238: see the next steps in LoadingSpinner.tsx file now there.
@@ -69,12 +84,85 @@ export default function Index() {
     }
   }
 
+  // step280: now lets create the function to delete the todos, thus here below ; with the parameters and type fetched similarly to the toggle function defined above, thus here below.
+  const handleDeleteTodo = async(id: Id<"todos">) => {
+    // step282: first lets get the alert popup before deleting here below, using "Alert" function of react-native thus here below.
+
+    // step283: in Alert syntax is to first pass "Title" , then "Description" and then array of buttons , where each button is an object passed inside { } each there.
+    Alert.alert("Delete Task", "Are you sure you want to delete this task?", [
+
+      // step284: the "text" tells what that button will show ; we have no "onPress" for this cancel button as if no onPress is written ; it means clicking it won't do anything , just remove the popup and thats what we want ; we can console log onPress , else leave it like this also, hence so now thus here below.
+
+      // step285: now keep the style for cancel as "cancel" itself ; not destructive as we don't want it to look red on IOS ; "cancel" style : Bold text (on iOS) or positioned first & Used for safe or neutral options ; WE COULD HAVE ALSO USED : style : "normal" for Regular text ; Normal button (default if you omit style here below).
+      {text: "Cancel", style: "cancel"},
+
+      // step286: we now make the below button "destructive" style to make it look : Red text (on iOS) or red highlight ; Used for dangerous actions like delete.
+
+      // step287: and then on pressing it call the function to actually delete the todos there, hence so now thus here below.
+      {text: "Delete", style: "destructive", onPress: async() => {
+        deleteTodo({id})
+      }}
+    ])
+  }
+
+  // step291: now lets define the function to handle the editting here below ; which takes the "todo" as input in it , which is of the type "Todo" defined earlier above there i..e its a item of the "todos" table of the convex table , hence so now thus here below.
+  const handleEditTodo = (todo:Todo) => {
+
+    // step292: when this function runs , we want to have the current text of todo in the input tag that appears on clicking the EDIT button, hence so there now below.
+    setEditText(todo.text)
+
+    // step293: also set the editting id to the todo being ediited here below.
+    setEdittingId(todo._id)
+    
+  }
+
+  // step297: now lets create a function to handle how to save the new task when clicked on the "Save" button , hence so now thus here below.
+
+  const handleSaveEdit = async () => {
+    // step302: lets put an if statement to check if its not null and then only proceed to prevent any crash or error to happen here below.
+    if(edittingId){
+      try{
+        // step298: now lets make call to the updateTodo function here below.
+
+        // step299: we pass in it the "id" we want to delete the todo of ; and the text we want to replace the current text of task with ; used "trim" to remove trailing and following extra spaces entered by user if there.
+
+        // step300: we pass this as object { } because the function "updateTodo" we created in backend wanted object with id and text there , thats why hence so now thus here below.
+
+        // step301: but the "id" can be "null" too as per its initial value that we had set earlier there above ; so lets wrap this inside a if statement here below.
+        await updateTodo({id:edittingId, text:editText.trim()})
+
+        // step303: now once update done ; set back the states to their initial values again now thus here below.
+        setEdittingId(null)
+        setEditText("")
+      }
+      catch(error){
+        console.log("Error updating the task", error)
+
+        // step304: can add a alert popup with the following title and description now here below.
+        Alert.alert("Error", "Failed to update the task")
+      }
+    }
+  }
+
+  // step294: lets create a function now to handle what to happen if we click on the Cancel button while editting there, hence so now thus here below.
+  const handleCancelEdit = () => {
+    // step295: when we cancel the editting , we will set the states back to their default values here below.
+    setEdittingId(null)
+    setEditText("")
+  }
+
   // step249: lets now define the function here below.
 
   // step250: FlatList by rule passes "item" as the one element from the "data" array there ; in our case "data" was the "todos" array ; and in TypeScript best practice is to mention its type too along with it like done here below.
 
   // step 251: React Native’s FlatList calls your renderItem function like this internally: renderItem({ item, index, separators }) ; but we need only the "item" so destructure it using {} here below.
   const renderTodoItem = ({item}: {item:Todo}) => {
+
+    // step305: now lets create a variable to keep track of if we are editting or not here below.
+
+    // step306: FlatList renders each todo seperately by rule unlike "map" ; so each todo gets its own renderTodoItem ; so for a todo if edittingId is equal to that todo's id, then it will be sure that the current todo is being edited , else "false" ; hence so now thus here below ; we know that in the FlatList we created ; this renderTodoItem function runs for each item and its item._id ; so this is being done for each item of todo ; and then based on if we are editting it or not ; we show that UI for that specific todo ; while the rest remains unchanged which are not being editted currently ; i.e. that whose isEditting is still "false" will still remain as it is, hence so now thus here below.
+    const isEditting = edittingId === item._id
+
     // step252: now lets return the following component for each item of "todos" here below.
     return (
       <View style={homeStyles.todoItemWrapper}>
@@ -126,6 +214,66 @@ export default function Index() {
           </TouchableOpacity>
 
           {/* step268: now after the button i.e. after the touchable opacity , lets put the actual text from database here below now. */}
+
+          {/* step307: so we will be showing the content inside the gradient box for each todo ; based on if the current todo is being editted or not ; if NOT then we show the UI we created earlier ; else render the following UI for that todo being editted, hence so now thus here below ; we know that in the FlatList we created ; this renderTodoItem function runs for each item and its item._id ; so this is being done for each item of todo ; and then based on if we are editting it or not ; we show that UI for that specific todo ; while the rest remains unchanged which are not being editted currently ; i.e. that whose isEditting is still "false" will still remain as it is, hence so now thus here below. */}
+          {isEditting ? (
+            <View style={homeStyles.editContainer}>
+
+              {/* step308: we now will be having a input tag given by "textInput" in react-native for editing the todo, hence so now thus here below. */}
+              <TextInput
+                style={homeStyles.editInput}
+
+                // step309: the value of it will always be equal to the value of the editText variable here below, hence so now thus here below ; Whatever value editText currently has will appear inside the input field here below.
+                value={editText}
+
+                // step310: on changing the text or value of the input tag, we call the below function ; Every time the user types something; it will update the editText variable too using the function here below.
+                onChangeText={setEditText}
+
+                // step311: Automatically focuses this input when it appears (so the keyboard pops up instantly) ; and so the user doesn’t need to tap the box again here below.
+                autoFocus
+
+                // step312: "multiline"  is Ideal for longer todo text or notesand it lets the user type multiple lines (pressing Enter adds a new line instead of submitting) here below.
+                multiline
+                placeholder="Edit your task..."
+                placeholderTextColor={colors.textMuted}
+              />
+              {/* step314: now lets have the SAVE and CANCEL buttons now here below. */}
+              <View style={homeStyles.editButtons}>
+
+                {/* step315: now lets have the button OR the TouchableOpacity of react native for the Save button here below. */}
+                <TouchableOpacity
+                  onPress={handleSaveEdit}
+                  activeOpacity={0.8}
+                >
+                  <LinearGradient
+                    colors={colors.gradients.success}
+                    style={homeStyles.editButton}
+                  >
+                    <Ionicons name="checkmark" size={16} color="#fff" />
+                    <Text style={homeStyles.editButtonText}>Save</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+
+                {/* step316: similarly now lets have the button to cancel the editting here below. */}
+
+                {/* step317: see the next steps in settings.tsx file now there. */}
+                <TouchableOpacity
+                  onPress={handleCancelEdit}
+                  activeOpacity={0.8}
+                >
+                  <LinearGradient
+                    colors={colors.gradients.muted}
+                    style={homeStyles.editButton}
+                  >
+                    <Ionicons name="close" size={16} color="#fff" />
+                    <Text style={homeStyles.editButtonText}>Cancel</Text>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+          ) 
+          :(
           <View style={homeStyles.todoTextContainer}>
             <Text
 
@@ -148,7 +296,9 @@ export default function Index() {
 
             {/* step272: here is the EDIT button below. */}
             <View style={homeStyles.todoActions}>
-              <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
+
+              {/* step313: lets now call the function on pressing the button here below ; and pass only the "item" itself and not item._id : because : it as defined in function takes the whole "todo" of type "Todo" defined earlier there ; and not only the id of that todo, hence so now thus here below. */}
+              <TouchableOpacity onPress={() => {handleEditTodo(item)}} activeOpacity={0.8}>
                 <LinearGradient
                   colors={colors.gradients.warning}
                   style={homeStyles.actionButton}
@@ -158,7 +308,9 @@ export default function Index() {
               </TouchableOpacity>
 
               {/* step273: and then this is the DELETE button here below. */}
-              <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
+
+              {/* step279: lets pass a function to be called with the id of the todo to be deleted on pressing the button , thus here below. */}
+              <TouchableOpacity onPress={() => {handleDeleteTodo(item._id)}} activeOpacity={0.8}>
                 <LinearGradient
                   colors={colors.gradients.danger}
                   style={homeStyles.actionButton}
@@ -168,6 +320,7 @@ export default function Index() {
               </TouchableOpacity>
             </View>
           </View>
+          )}
         </LinearGradient>
       </View>
     )
