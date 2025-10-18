@@ -3,12 +3,19 @@ import { api } from "@/convex/_generated/api";
 import useTheme, { ColorScheme } from "@/hooks/useTheme";
 import { useMutation, useQuery } from "convex/react";
 import { Link } from "expo-router";
-import { StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, StatusBar, Text, TouchableOpacity, View } from "react-native";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import Header from "@/components/Header";
 import TodoInput from "@/components/TodoInput";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import { Ionicons } from "@expo/vector-icons";
+import EmptyState from "@/components/EmptyState";
+
+// step252: lets get the type of each item in todos array using the Convex function "Doc" which takes the table "todos" as input and returns the type of each item as per the table's Schema here below ; if we hover on Todo : we can see the type its having here below.
+type Todo = Doc<"todos">
 
 export default function Index() {
 
@@ -25,6 +32,146 @@ export default function Index() {
 
   // step173: lets call the createHomeStyles function here below to use its styles now here below.
   const homeStyles = createHomeStyles(colors);
+
+  // step231: lets now call the function of CONVEX to get all the todos using the useQuery hook here below.
+  const todos = useQuery(api.todos.getTodos);
+
+  // step236: lets now make a variable to show that if the data has not been fetched yet ; i.e. when we hover on "todos" variable above ; we see | undefined there ; i.e. if todos were not fetched then its undefined ; so lets make isLoading to be true if its undefined and false if its not undefined here below.
+  const isLoading = todos === undefined
+
+    // step264: lets create a function that calls the convex database to call the toggleTodo method here below using useMutation to make a POST request to the database and make the changes thus here below.
+
+    // step265: put this above the if consition as this "hook" has to be always be called there ; else it will call error as early return may occur there if the "if" statement is above this hook here below.
+  const toggleTodo = useMutation(api.todos.toggleTodo);
+
+  // step237: lets render the LoadingSpinner component here below when isLoading is true.
+
+  // step238: see the next steps in LoadingSpinner.tsx file now there.
+
+  // step242: can now see the loading spinner there ; if we make the condition "true" inside the "if" here below just for testig purpose thus here below.
+  // if(true) return <LoadingSpinner />
+  
+  if(isLoading) return <LoadingSpinner />
+
+  // step262: now lets create the function for toggling here below.
+
+  // step263: now here since in TypeScript we always must mention the type of prop , which is Id of item of todos table ; so we can't say its string ; rather get Id from "convex" and pass it as a prop here below ; so now it will treat it as Id of "todos" table type here below ; this thus : Helps prevent mistakes by checking that you don’t pass some random string or number. Id<"todos"> is a special type from Convex that ensures the id is a valid ID from the "todos" table.
+  const handleToggleTodo = async (id: Id<"todos">) => {
+    try {
+      // step266: now lets call the function to toggleTodo here below ; with the "id" of todo to be toggled as { } object as the toggleTodo metod there also was asking an object as input there too , hence so now thus here below.
+      await toggleTodo({id});
+    } 
+    catch (error) {
+      console.error("Error toggling todo:", error);
+
+      // step267: this alert is like "alert" coming on phone where we write first the "title" of alert pop-up and then its description , thus here below.
+      Alert.alert("Error", "Failed to toggle todo");
+    }
+  }
+
+  // step249: lets now define the function here below.
+
+  // step250: FlatList by rule passes "item" as the one element from the "data" array there ; in our case "data" was the "todos" array ; and in TypeScript best practice is to mention its type too along with it like done here below.
+
+  // step 251: React Native’s FlatList calls your renderItem function like this internally: renderItem({ item, index, separators }) ; but we need only the "item" so destructure it using {} here below.
+  const renderTodoItem = ({item}: {item:Todo}) => {
+    // step252: now lets return the following component for each item of "todos" here below.
+    return (
+      <View style={homeStyles.todoItemWrapper}>
+        {/* step253: lets now make the container to have a gradient like mentioned here below. */}
+        <LinearGradient
+          colors={colors.gradients.surface} 
+          style={homeStyles.todoItem} 
+
+          // step254: but gradient color variation , we want to have top left to bottom right and not the default top to bottom ; so lets mention it here below specifically here below.
+
+          // step254: so its like -
+          /*
+          (0,0) ----- (0,1)
+            |
+            |
+          (1,0) ----- (1,1)
+
+          so : for top left to bottom right , mention the same here below.
+          */
+          start={{x:0, y:0}}
+          end={{x:1, y:1}}
+        >
+          {/* step255: now for the content of the gradient container ; we first want a button here below to check or uncheck a task here below. */}
+          <TouchableOpacity
+            style={homeStyles.checkbox}
+
+            // step256: lets make it to be 70% visible when active ; this makes it slightly faded on pressing , giving a good realistic feel to the user, here below.
+            activeOpacity={0.7}
+
+            // step261: now lets call the method to handle the toggling here below ; by passing the "id" of the item as a prop in it here below.
+            onPress={() => {handleToggleTodo(item._id)}}
+          >
+            {/* step257: now inside the button , we want to show the checkmark here below ; so lets add a linear gradient for it as well here below. */}
+            <LinearGradient
+
+            // step258: give colors based on the status of isCompleted here below.
+              colors={item.isCompleted ? colors.gradients.success : colors.gradients.muted}
+
+              // step259: passing the styles as array i.e. all styles will be merged and applied ; i..e checkboxInner will always be there ; but if the item has been marked completed , then we show no border i.e. transparent ; but if its not completed then show the border color present in "colors" of theme here below.
+              style={[
+                homeStyles.checkboxInner,
+                {borderColor: item.isCompleted ? "transparent" : colors.border},
+              ]}
+            >
+              {/* step260: if the task is completed ; we show the checkmark here below inside the button here below. */}
+              {item.isCompleted && <Ionicons name="checkmark" size={18} color="#fff" />}
+
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* step268: now after the button i.e. after the touchable opacity , lets put the actual text from database here below now. */}
+          <View style={homeStyles.todoTextContainer}>
+            <Text
+
+            // step269: we will apply multiple styles to the text here , so pass them as an array here below ; we will always apply the todoText style ; but apply the other styles only if its completed here below.
+              style={[
+                homeStyles.todoText,
+                item.isCompleted && {
+
+                  // step270: line-through means it will strike it off when completed here below.
+                  textDecorationLine: "line-through",
+                  color: colors.textMuted,
+                  opacity: 0.6,
+                },
+              ]}
+            >
+              {item.text}
+            </Text>
+
+            {/* step271: now lets add the EDIT and DELETE buttons here below. */}
+
+            {/* step272: here is the EDIT button below. */}
+            <View style={homeStyles.todoActions}>
+              <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
+                <LinearGradient
+                  colors={colors.gradients.warning}
+                  style={homeStyles.actionButton}
+                >
+                  <Ionicons name="pencil" size={14} color="#fff" />
+                </LinearGradient>
+              </TouchableOpacity>
+
+              {/* step273: and then this is the DELETE button here below. */}
+              <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
+                <LinearGradient
+                  colors={colors.gradients.danger}
+                  style={homeStyles.actionButton}
+                >
+                  <Ionicons name="trash" size={14} color="#fff" />
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </LinearGradient>
+      </View>
+    )
+  }
 
   // step143: lets call the query to get all the todos here in the home screen.
 
@@ -101,8 +248,46 @@ export default function Index() {
           {/* step207: see the next steps now in TodoInput.tsx file now there. */}
           <TodoInput />
 
+          {/* step232: now lets use map to iterate through all the todos and display it here below. */}
+
+          {/* step233: we using ?. so that it will run the loop only if "todos" is not empty and has some values in it , else it will be meaningless.*/}
+          {/* {todos?.map((todo)=>
+
+            // step234: so this will now print the "text" of all the todos there & lets put key as something unique here below ; because by rule : "map" involves using a unique key in each of its iteration, like done here below.
+
+            <Text key={todo._id}>{todo.text}</Text>
+          )} */}
+
+          {/* step243: now lets use the FlatList instead of the "map" here below. */}
+          <FlatList
+            // step 244: we first pass the data to map over here below.
+            data={todos}
+
+            // step245: then for every item in it , we call the function written in the "renderItem" here below.
+            renderItem={renderTodoItem}
+
+            // step246: like we pass unique key in "map" ; similarly here below too we do so.
+            keyExtractor={(item) => item._id}
+
+            // step247: lets add some styles too here below.
+            style={homeStyles.todoList}
+
+            // step248: this contentContainerStyle is used to style the inner content area of the FlatList — not the FlatList container itself.
+            contentContainerStyle={homeStyles.todoListContent}
+
+            // step274: now if the list of data to traverse on is empty there ; then instead of showing nothing there ; we can show the text like "no todos" there ; for this we can use the "ListEmptyComponent" of FlatList here below.
+
+            // step275: see the next steps in EmptyState.jsx file now there.
+            ListEmptyComponent={<EmptyState />}
+
+            // step278: we can now prevent the side scrollbar to be visible on scrolling there by the code here below.
+            showsVerticalScrollIndicator={false}
+          />
+
+          {/* step235: but a better way to render UI is using FlatList instead of map ; because : if we have 100 of todos in database ; using "map" will render all of them at once making the task heavy and network may slow down ; but using FlatList will render only like 2-3 items that can fit screen at that time & as we scroll to bottom ; it will render the rest of them there ; thus FlatList is a "performant" way of rendering lists. */}
+
           {/* step92: lets create a button , which is "TouchableOpacity" in React Native thus here below. */}
-          <TouchableOpacity onPress={toggleDarkMode}>
+          {/* <TouchableOpacity onPress={toggleDarkMode}> */}
 
             {/* Toggle the theme */}
 
@@ -111,8 +296,8 @@ export default function Index() {
             {/* step94: now on clicking this we will see the color change stating we now are in a different mode : and after going to dark mode if we close the app there and then re-run the app, it will still be in dark mode there as we had used AsyncStorage to save the value of darkMode in local storage there earlier. */}
 
             {/* step95: now see the next steps in step96.txt file now there. */}
-            <Text>Toggle the theme</Text>
-          </TouchableOpacity>
+            {/* <Text>Toggle the theme</Text> */}
+          {/* </TouchableOpacity> */}
 
           {/* step149: lets create a button for now to add a todo here below. */}
 
