@@ -39,11 +39,13 @@ Listraq helps users efficiently organize daily tasks with seamless real-time upd
 ---
 
 ## ⚙️ Environment Variables
+```
 
 Create a `.env` file in the root folder with:
 
 CONVEX_DEPLOYMENT=your_convex_deployment_url
 EXPO_PUBLIC_CONVEX_URL=your_convex_url
+```
 
 
 ---
