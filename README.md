@@ -6,6 +6,19 @@ Listraq helps users efficiently organize daily tasks with seamless real-time upd
 
 ---
 
+## 📸 App Screenshots
+
+<p align="center">
+  <b>Tasks</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <b>Settings</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <br/><br/>
+
+  <img src="assets/screenshots/tasks.png" width="250"/>
+  <img src="assets/screenshots/settings.png" width="250"/>
+</p>
+
+---
+
 ## ✨ Features
 
 📝 Task Management: Add, edit, complete, and delete tasks  
