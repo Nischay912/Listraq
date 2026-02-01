@@ -1,50 +1,139 @@
-# Welcome to your Expo app 👋
+# 📝 Listraq - Real-Time Full-Stack To-Do Mobile Application
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, full-stack, real-time task management mobile application built with React Native and Expo, featuring instant cross-device synchronization, live progress tracking, dark mode, and a cloud-powered backend using Convex.
 
-## Get started
+Listraq helps users efficiently organize daily tasks with seamless real-time updates across Android, iOS, and the web — all using JavaScript without any native Swift or Kotlin code.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+📝 Task Management: Add, edit, complete, and delete tasks  
+⚡ Real-Time Sync: Instant updates across multiple devices using Convex  
+📊 Live Progress Bar: Visual completion tracking  
+🌙 Dark Mode: Smooth light/dark theme toggle  
+📈 Task Statistics: Total, completed, and remaining tasks  
+🔄 Pull to Refresh: Manual refresh for latest data  
+🗑️ Bulk Delete: Clear all tasks instantly (Danger Zone)  
+📱 Cross Platform: Works on Android, iOS, and Web  
+🧠 Beginner Friendly: Built fully with React Native + JavaScript  
+☁️ Cloud Backend: Persistent storage with real-time database  
+🎨 Modern UI: Clean, responsive mobile-first design  
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🛠️ Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| Technology | Purpose |
+|-----------|---------|
+| React Native | Mobile app development |
+| Expo | Build & run app easily on devices |
+| Convex | Real-time backend & database |
+| JavaScript | Core programming language |
+| React Navigation | Stack & tab navigation |
+| Zustand | Global state management |
+| AsyncStorage | Local device storage |
+| Tailwind CSS / NativeWind | Styling |
+| Node.js (optional tools) | Dev environment |
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## ⚙️ Environment Variables
 
-When you're ready, run:
+Create a `.env` file in the root folder with:
 
-```bash
-npm run reset-project
+CONVEX_DEPLOYMENT=your_convex_deployment_url
+EXPO_PUBLIC_CONVEX_URL=your_convex_url
+
+
+---
+
+## 📂 Project Structure
+
+```
+Listraq/
+    app/
+        screens/
+        components/
+        store/
+        hooks/
+        navigation/
+
+    convex/
+        schema.ts
+        tasks.ts
+        mutations.ts
+
+    assets/
+    App.js
+    package.json
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🚀 Getting Started
 
-To learn more about developing your project with Expo, look at the following resources:
+### 1️⃣ Install dependencies
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+### 2️⃣ Start Expo server
 
-Join our community of developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 3️⃣ Run app
+
+• Press **A** → Android  
+• Press **I** → iOS  
+• Press **W** → Web  
+• Or scan QR with Expo Go  
+
+---
+
+## 📡 Backend (Convex)
+
+### Task APIs
+
+### ➕ Create Task
+
+### 📋 Get Tasks
+
+### ✅ Toggle Complete
+
+### ✏️ Edit Task
+
+### 🗑️ Delete Task
+
+### 🚨 Delete All
+
+---
+
+## 📸 Screens
+
+- Todo List Screen  
+- Add Task Modal  
+- Progress Dashboard  
+- Settings & Stats  
+- Dark Mode UI  
+
+---
+
+## 📦 Deployment
+
+### Mobile
+
+
+### Backend
+
+
+---
+
+## 🧑‍💻 Author
+
+**Nischay Kumar**  
+MERN & React Native Developer  
+
+---
+
+## ⭐ If you like this project
+
+Give it a ⭐ on GitHub and feel free to fork or contribute!
+
